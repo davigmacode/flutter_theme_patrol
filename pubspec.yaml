@@ -1,8 +1,7 @@
 name: theme_patrol
-description: A new Flutter package project.
+description: Keep an eyes on your app theme changes.
 version: 0.0.1
-author:
-homepage:
+homepage: https://github.com/davigmacode/flutter_theme_patrol.git
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
