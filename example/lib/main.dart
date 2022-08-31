@@ -3,32 +3,34 @@ import 'package:theme_patrol/theme_patrol.dart';
 import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ThemePatrol(
       light: ThemeData(
         brightness: Brightness.light,
-        primarySwatch: Colors.blue,
+        colorSchemeSeed: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       dark: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.blue,
+        colorSchemeSeed: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       mode: ThemeMode.system,
       builder: (context, theme) {
         return MaterialApp(
-          title: 'Flutter Demo',
+          title: 'ThemePatrol Example',
           theme: theme.light,
           darkTheme: theme.dark,
           themeMode: theme.mode,
-          home: MyHomePage(title: 'Flutter Demo Home Page'),
+          home: const MyHomePage(title: 'ThemePatrol Example'),
         );
       },
     );
@@ -36,29 +38,28 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-
+class MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(ThemePatrol.of(context).mode.toString()),
         actions: [
           Switch(
             value: ThemePatrol.of(context).isDarkMode,
             onChanged: (selected) {
               if (selected) {
-                ThemePatrol.of(context).darkMode();
+                ThemePatrol.of(context).setDarkMode();
               } else {
-                ThemePatrol.of(context).lightMode();
+                ThemePatrol.of(context).setLightMode();
               }
             },
           ),
@@ -69,7 +70,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             CircleColorPicker(
-              initialColor: Theme.of(context).primaryColor,
+              // initialColor: Theme.of(context).primaryColor,
+
               onChanged: (color) => ThemePatrol.of(context).setColor(color),
               size: const Size(240, 240),
               strokeWidth: 4,
@@ -77,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ],
         ),
-      ),// This trailing comma makes auto-formatting nicer for build methods.
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
