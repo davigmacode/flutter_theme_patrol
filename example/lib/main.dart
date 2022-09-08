@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:theme_patrol/theme_patrol.dart';
-import 'package:flutter_circle_color_picker/flutter_circle_color_picker.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,22 +13,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemePatrol(
+      initialTheme: 'amber',
+      initialMode: ThemeMode.system,
+      themes: {
+        'purple': ThemeConfig.fromColor(Colors.purple),
+        'pink': ThemeConfig.fromColor(Colors.pink),
+        'amber': ThemeConfig.fromColor(Colors.amber),
+        'elegant': ThemeConfig(data: ThemeData()),
+      },
       light: ThemeData(
+        // becomes default light theme
         brightness: Brightness.light,
-        colorSchemeSeed: Colors.blue,
+        colorSchemeSeed: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       dark: ThemeData(
+        // becomes default dark theme
         brightness: Brightness.dark,
-        colorSchemeSeed: Colors.blue,
+        colorSchemeSeed: Colors.purple,
+        toggleableActiveColor: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      mode: ThemeMode.system,
       builder: (context, theme) {
         return MaterialApp(
           title: 'ThemePatrol Example',
-          theme: theme.light,
-          darkTheme: theme.dark,
+          theme: theme.data,
+          darkTheme: theme.darkData,
           themeMode: theme.mode,
           home: const MyHomePage(title: 'ThemePatrol Example'),
         );
@@ -53,14 +63,18 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(ThemePatrol.of(context).mode.toString()),
         actions: [
-          Switch(
-            value: ThemePatrol.of(context).isDarkMode,
-            onChanged: (selected) {
-              if (selected) {
-                ThemePatrol.of(context).setDarkMode();
-              } else {
-                ThemePatrol.of(context).setLightMode();
-              }
+          ThemeConsumer(
+            builder: (context, theme) {
+              return Switch(
+                value: theme.isDarkMode,
+                onChanged: (selected) {
+                  if (selected) {
+                    theme.toDarkMode();
+                  } else {
+                    theme.toLightMode();
+                  }
+                },
+              );
             },
           ),
         ],
@@ -69,13 +83,26 @@ class MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            CircleColorPicker(
-              // initialColor: Theme.of(context).primaryColor,
-
-              onChanged: (color) => ThemePatrol.of(context).setColor(color),
-              size: const Size(240, 240),
-              strokeWidth: 4,
-              thumbSize: 36,
+            ThemeConsumer(
+              builder: (context, theme) {
+                return Wrap(
+                  spacing: 5,
+                  children: theme.available.entries
+                      .map((e) => ActionChip(
+                            label: Text(e.key),
+                            onPressed: () => theme.select(e.key),
+                            avatar: CircleAvatar(
+                              backgroundColor:
+                                  e.value.colorSchemeOf(context).primary,
+                            ),
+                          ))
+                      .toList(),
+                );
+              },
+            ),
+            ColorPicker(
+              pickerColor: Theme.of(context).colorScheme.primary,
+              onColorChanged: (color) => ThemePatrol.of(context).toColor(color),
             ),
           ],
         ),
