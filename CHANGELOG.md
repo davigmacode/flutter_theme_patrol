@@ -1,3 +1,7 @@
+## 2.0.1
+
+* Fixed deprecated hashValues
+
 ## 2.0.0
 
 * Support multiple themes

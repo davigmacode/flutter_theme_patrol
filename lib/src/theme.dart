@@ -52,7 +52,7 @@ class ThemeConfig {
           description == other.description;
 
   @override
-  int get hashCode => hashValues(data, darkData, description);
+  int get hashCode => Object.hash(data, darkData, description);
 
   /// The main/light theme data
   final ThemeData data;

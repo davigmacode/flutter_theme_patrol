@@ -1,6 +1,6 @@
 name: theme_patrol
 description: Keep an eyes on your app theme changes and provides an easy way to change the color scheme
-version: 2.0.0
+version: 2.0.1
 homepage: https://github.com/davigmacode/flutter_theme_patrol.git
 
 environment:
