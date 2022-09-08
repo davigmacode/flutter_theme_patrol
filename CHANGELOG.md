@@ -1,3 +1,10 @@
+## 2.0.0
+
+* Support multiple themes
+* Expose `ThemeProvider`, `ThemeConsumer`, `ThemeConfig`, `ThemeMap`, `ThemeBuilder`
+* Refactor most of code
+
+
 ## 1.0.1
 
 * Update changelog
