@@ -4,9 +4,9 @@ import 'controller.dart';
 class ThemeProvider extends InheritedNotifier<ThemeController> {
   const ThemeProvider({
     Key? key,
-    required ThemeController notifier,
+    required ThemeController controller,
     required Widget child,
-  }) : super(key: key, notifier: notifier, child: child);
+  }) : super(key: key, notifier: controller, child: child);
 
   static ThemeController of(BuildContext context) {
     final ThemeProvider? result =

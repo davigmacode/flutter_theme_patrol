@@ -1,34 +1,40 @@
 import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'provider.dart';
-
-typedef ThemeBuilder = Widget Function(
-  BuildContext context,
-  ThemeController theme,
-);
+import 'consumer.dart';
+import 'theme.dart';
+import 'builder.dart';
 
 class ThemePatrol extends StatelessWidget {
-  const ThemePatrol({
+  const ThemePatrol._({
     Key? key,
-    required this.light,
-    required this.dark,
-    this.mode = ThemeMode.system,
+    required this.controller,
     required this.builder,
   }) : super(key: key);
 
-  /// The light theme data
-  final ThemeData light;
+  factory ThemePatrol({
+    ThemeData? light,
+    ThemeData? dark,
+    ThemeMap themes = const {},
+    ThemeMode initialMode = ThemeMode.system,
+    String initialTheme = 'default',
+    required ThemeBuilder builder,
+  }) =>
+      ThemePatrol._(
+        controller: ThemeController(
+          initialMode: initialMode,
+          initialTheme: initialTheme,
+          themes: themes,
+          light: light,
+          dark: dark,
+        ),
+        builder: builder,
+      );
 
-  /// The dark theme data
-  final ThemeData dark;
-
-  /// The theme mode
-  ///
-  /// Defaults to `ThemeMode.system`
-  final ThemeMode mode;
-
-  /// Builder that gets called when the brightness or theme changes
+  /// Builder that gets called when the theme changes
   final ThemeBuilder builder;
+
+  final ThemeController controller;
 
   static ThemeController of(BuildContext context) {
     return ThemeProvider.of(context);
@@ -37,14 +43,8 @@ class ThemePatrol extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemeProvider(
-      notifier: ThemeController(
-        light: light,
-        dark: dark,
-        mode: mode,
-      ),
-      child: Builder(builder: (context) {
-        return builder(context, ThemeProvider.of(context));
-      }),
+      controller: controller,
+      child: ThemeConsumer(builder: builder),
     );
   }
 }
