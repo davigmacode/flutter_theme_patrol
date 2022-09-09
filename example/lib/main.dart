@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:theme_patrol/theme_patrol.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,27 +12,22 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ThemePatrol(
-      initialTheme: 'amber',
-      initialMode: ThemeMode.system,
+      // initialTheme: 'amber',
+      // initialMode: ThemeMode.system,
+      onAvailableChanged: (_) => print('available themes changed'),
+      onThemeChanged: (theme) => print('theme changed to ${theme.selected}'),
+      onModeChanged: (theme) =>
+          print('theme mode changed to ${theme.mode.name}'),
+      onColorChanged: (theme) =>
+          print('theme color changed to ${theme.color.toString()}'),
+      onChanged: (theme) => print('value changed'),
       themes: {
-        'purple': ThemeConfig.fromColor(Colors.purple),
-        'pink': ThemeConfig.fromColor(Colors.pink),
-        'amber': ThemeConfig.fromColor(Colors.amber),
-        'elegant': ThemeConfig(data: ThemeData()),
+        'basic': ThemeConfig.fromColor(Colors.purple),
+        'pro': ThemeConfig.fromColor(Colors.red),
+        'premium': ThemeConfig.fromColor(Colors.amber),
       },
-      light: ThemeData(
-        // becomes default light theme
-        brightness: Brightness.light,
-        colorSchemeSeed: Colors.purple,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      dark: ThemeData(
-        // becomes default dark theme
-        brightness: Brightness.dark,
-        colorSchemeSeed: Colors.purple,
-        toggleableActiveColor: Colors.purple,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      light: ThemeData.light(),
+      dark: ThemeData.dark(),
       builder: (context, theme) {
         return MaterialApp(
           title: 'ThemePatrol Example',
@@ -61,23 +55,7 @@ class MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(ThemePatrol.of(context).mode.toString()),
-        actions: [
-          ThemeConsumer(
-            builder: (context, theme) {
-              return Switch(
-                value: theme.isDarkMode,
-                onChanged: (selected) {
-                  if (selected) {
-                    theme.toDarkMode();
-                  } else {
-                    theme.toLightMode();
-                  }
-                },
-              );
-            },
-          ),
-        ],
+        title: const Text('ThemePatrol'),
       ),
       body: Center(
         child: Column(
@@ -85,12 +63,32 @@ class MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             ThemeConsumer(
               builder: (context, theme) {
+                return Column(
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () => theme.toggleMode(),
+                      icon: Icon(theme.modeIcon),
+                      label: Text('${theme.mode.name.toUpperCase()} MODE'),
+                    ),
+                    const SizedBox(height: 10),
+                    OutlinedButton(
+                      onPressed: () => theme.resetMode(),
+                      child: const Text('Reset to Initial Mode'),
+                    ),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(height: 30),
+            ThemeConsumer(
+              builder: (context, theme) {
                 return Wrap(
                   spacing: 5,
-                  children: theme.available.entries
-                      .map((e) => ActionChip(
+                  children: theme.availableEntries
+                      .map((e) => FilterChip(
                             label: Text(e.key),
-                            onPressed: () => theme.select(e.key),
+                            onSelected: (_) => theme.select(e.key),
+                            selected: theme.selected == e.key,
                             avatar: CircleAvatar(
                               backgroundColor:
                                   e.value.colorSchemeOf(context).primary,
@@ -100,10 +98,73 @@ class MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
-            ColorPicker(
-              pickerColor: Theme.of(context).colorScheme.primary,
-              onColorChanged: (color) => ThemePatrol.of(context).toColor(color),
+            const SizedBox(height: 20),
+            Wrap(
+              spacing: 5,
+              children: [
+                TextButton(
+                  onPressed: () => ThemePatrol.of(context).selectPrev(),
+                  child: const Text('Prev Theme'),
+                ),
+                ElevatedButton(
+                  onPressed: () => ThemeProvider.of(context).resetTheme(),
+                  child: const Text('Reset to Initial Theme'),
+                ),
+                TextButton(
+                  onPressed: () => ThemeProvider.of(context).selectNext(),
+                  child: const Text('Next Theme'),
+                ),
+              ],
             ),
+            const SizedBox(height: 10),
+            OutlinedButton(
+              onPressed: () => ThemePatrol.of(context).selectRandom(),
+              child: const Text('Random Theme'),
+            ),
+            const SizedBox(height: 30),
+            const Text(
+              'Override Theme Color',
+              style: TextStyle(fontWeight: FontWeight.w400),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              width: 200,
+              alignment: Alignment.center,
+              child: GridView.builder(
+                shrinkWrap: true,
+                itemCount: Colors.primaries.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 2,
+                  crossAxisSpacing: 2,
+                  crossAxisCount: 6,
+                ),
+                itemBuilder: (_, i) {
+                  final color = Colors.primaries[i];
+                  return Card(
+                    color: color,
+                    child: InkWell(
+                      onTap: () => ThemePatrol.of(context).toColor(color),
+                      child: color == ThemePatrol.of(context).color
+                          ? const Icon(
+                              Icons.check,
+                              color: Colors.white,
+                            )
+                          : Container(),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextButton(
+              onPressed: () => ThemePatrol.of(context).resetColor(),
+              child: const Text('Reset Color to Theme Color'),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () => ThemePatrol.of(context).reset(),
+              child: const Text('Reset All to Initial Values'),
+            )
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
