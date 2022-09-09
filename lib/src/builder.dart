@@ -5,3 +5,5 @@ typedef ThemeBuilder = Widget Function(
   BuildContext context,
   ThemeController theme,
 );
+
+typedef ThemeChanged = void Function(ThemeController theme);

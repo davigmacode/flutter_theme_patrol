@@ -130,6 +130,7 @@ class ThemeConfig {
 }
 
 typedef ThemeMap = Map<String, ThemeConfig>;
+typedef ThemeList = List<MapEntry<String, ThemeConfig>>;
 
 extension ThemeMapParse on ThemeMap {
   static ThemeMap fromJson(String source) {
