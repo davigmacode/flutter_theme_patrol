@@ -1,3 +1,9 @@
+## 2.1.0
+
+* Add on change callback
+* Reset to initial value
+* More utils
+
 ## 2.0.1
 
 * Fixed deprecated hashValues
