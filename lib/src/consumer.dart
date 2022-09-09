@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'provider.dart';
-import 'builder.dart';
+import 'model.dart';
 
 class ThemeConsumer extends StatelessWidget {
   const ThemeConsumer({

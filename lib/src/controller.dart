@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:theme_patrol/src/builder.dart';
-import 'theme.dart';
+import 'package:theme_patrol/src/model.dart';
+import 'data.dart';
 
 class ThemeController extends ChangeNotifier {
   /// Internal Constructor

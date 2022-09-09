@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'provider.dart';
 import 'consumer.dart';
-import 'theme.dart';
-import 'builder.dart';
+import 'data.dart';
+import 'model.dart';
 
 class ThemePatrol extends StatelessWidget {
   const ThemePatrol._({
