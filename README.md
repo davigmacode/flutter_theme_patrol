@@ -2,7 +2,10 @@
 
 <a href="https://www.buymeacoffee.com/davigmacode" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="195" height="55"></a>
 
-Keep an eyes on your app theme changes and provides an easy way to change the color scheme.
+Keep an eyes on your app theme changes, comes with a powerful set of tools to manage multiple themes with or without dark mode.
+
+![Preview](https://github.com/davigmacode/flutter_theme_patrol/raw/master/media/preview.gif)
+[Demo](https://davigmacode.github.io/flutter_theme_patrol)
 
 ## Features
 
@@ -173,7 +176,7 @@ ThemePatrol(
       theme: theme.data, // or theme.lightData
       home: Scaffold(
         appBar: AppBar(
-          title: Text(ThemePatrol.of(context).name),
+          title: Text(ThemePatrol.of(context).selected),
         ),
         body: Center(
           child: Column(
@@ -183,7 +186,7 @@ ThemePatrol(
                 builder: (context, theme) {
                   return Wrap(
                     spacing: 5,
-                    children: theme.available.entries
+                    children: theme.availableEntries
                         .map((e) => ActionChip(
                               label: Text(e.key),
                               onPressed: () => theme.select(e.key),
@@ -227,7 +230,7 @@ ThemePatrol(
       themeMode: theme.mode,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(ThemePatrol.of(context).name),
+          title: Text(ThemePatrol.of(context).selected),
           actions: [
             ThemeConsumer(
               builder: (context, theme) {
