@@ -1,3 +1,9 @@
+## 2.2.0
+
+* Change license
+* Configurable mode icons
+* Select theme by index
+
 ## 2.1.0
 
 * Add on change callback

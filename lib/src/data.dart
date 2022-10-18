@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 /// The theme config
@@ -131,13 +129,4 @@ class ThemeConfig {
 
 typedef ThemeMap = Map<String, ThemeConfig>;
 typedef ThemeList = List<MapEntry<String, ThemeConfig>>;
-
-extension ThemeMapParse on ThemeMap {
-  static ThemeMap fromJson(String source) {
-    return jsonDecode(source);
-  }
-
-  String toJson() {
-    return jsonEncode(this);
-  }
-}
+typedef ThemeModeIcons = Map<ThemeMode, IconData>;

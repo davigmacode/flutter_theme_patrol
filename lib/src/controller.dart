@@ -9,6 +9,7 @@ class ThemeController extends ChangeNotifier {
     required this.selected,
     required this.available,
     required this.mode,
+    required this.modeIcons,
     this.initialMode = ThemeMode.system,
     this.initialTheme = 'default',
     this.onAvailableChanged,
@@ -44,6 +45,7 @@ class ThemeController extends ChangeNotifier {
     ThemeMap themes = const {},
     ThemeMode initialMode = ThemeMode.system,
     String? initialTheme,
+    ThemeModeIcons? modeIcons,
     ThemeChanged? onAvailableChanged,
     ThemeChanged? onThemeChanged,
     ThemeChanged? onModeChanged,
@@ -76,6 +78,7 @@ class ThemeController extends ChangeNotifier {
       initialMode: initialMode,
       selected: initialTheme,
       mode: initialMode,
+      modeIcons: modeIcons ?? defaultModeIcons,
       available: available,
       onAvailableChanged: onAvailableChanged,
       onThemeChanged: onThemeChanged,
@@ -122,16 +125,19 @@ class ThemeController extends ChangeNotifier {
   /// Current selected theme mode
   ThemeMode mode;
 
+  /// Map of the icons represent to the theme mode
+  final ThemeModeIcons modeIcons;
+
+  /// Default map of the icons represent to the theme mode
+  static ThemeModeIcons defaultModeIcons = {
+    ThemeMode.system: Icons.brightness_auto_rounded,
+    ThemeMode.light: Icons.brightness_low_rounded,
+    ThemeMode.dark: Icons.brightness_2_rounded
+  };
+
   /// Return the icon represent to the current theme mode
   IconData get modeIcon {
-    switch (mode) {
-      case ThemeMode.system:
-        return Icons.brightness_auto;
-      case ThemeMode.light:
-        return Icons.brightness_low;
-      case ThemeMode.dark:
-        return Icons.brightness_2;
-    }
+    return modeIcons[mode]!;
   }
 
   /// This value will override the current theme color
@@ -197,18 +203,21 @@ class ThemeController extends ChangeNotifier {
     this.onChanged?.call(this);
   }
 
+  void selectIndex(int index) {
+    final theme = availableEntries[index];
+    select(theme.key);
+  }
+
   /// Cycle to next theme in the theme list.
   void selectNext() {
     final nextIndex = (selectedIndex + 1) % availableEntries.length;
-    final nextTheme = availableEntries[nextIndex];
-    select(nextTheme.key);
+    selectIndex(nextIndex);
   }
 
   /// Cycle to prev theme in the theme list.
   void selectPrev() {
-    final nextIndex = (selectedIndex - 1) % availableEntries.length;
-    final nextTheme = availableEntries[nextIndex];
-    select(nextTheme.key);
+    final prevIndex = (selectedIndex - 1) % availableEntries.length;
+    selectIndex(prevIndex);
   }
 
   /// Select a random theme
@@ -218,8 +227,7 @@ class ThemeController extends ChangeNotifier {
     do {
       randomIndex = 0 + _random.nextInt(maxIndex - 0);
     } while (selectedIndex == randomIndex);
-    final randomTheme = availableEntries[randomIndex];
-    select(randomTheme.key);
+    selectIndex(randomIndex);
   }
 
   /// Override the theme color
