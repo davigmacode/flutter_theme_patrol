@@ -35,7 +35,6 @@ class ThemeConfig {
         darkData: ThemeData(
           brightness: Brightness.dark,
           colorSchemeSeed: color,
-          toggleableActiveColor: color,
         ),
         description: description,
       );
@@ -112,7 +111,6 @@ class ThemeConfig {
                   brightness: Brightness.dark,
                   seedColor: color,
                 ),
-                toggleableActiveColor: color,
               )
           : null,
     );
