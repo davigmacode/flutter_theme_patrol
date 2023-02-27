@@ -1,6 +1,6 @@
 name: theme_patrol
 description: Keep an eyes on your app theme changes, comes with a powerful set of tools to manage multiple themes with or without theme mode
-version: 2.2.0
+version: 2.2.1
 homepage: https://github.com/davigmacode/flutter_theme_patrol.git
 
 environment:
