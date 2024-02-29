@@ -1,3 +1,7 @@
+## 2.2.1
+
+* removed deprecated properties
+
 ## 2.2.0
 
 * Change license
