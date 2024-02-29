@@ -6,18 +6,22 @@ import 'data.dart';
 class ThemeController extends ChangeNotifier {
   /// Internal Constructor
   ThemeController._({
-    required this.selected,
     required this.available,
-    required this.mode,
     required this.modeIcons,
     this.initialMode = ThemeMode.system,
     this.initialTheme = 'default',
-    this.onAvailableChanged,
-    this.onThemeChanged,
-    this.onModeChanged,
-    this.onColorChanged,
-    this.onChanged,
-  });
+    ThemeChanged? onAvailableChanged,
+    ThemeChanged? onThemeChanged,
+    ThemeChanged? onModeChanged,
+    ThemeChanged? onColorChanged,
+    ThemeChanged? onChanged,
+  })  : mode = initialMode,
+        selected = initialTheme,
+        _onAvailableChanged = onAvailableChanged,
+        _onThemeChanged = onThemeChanged,
+        _onModeChanged = onModeChanged,
+        _onColorChanged = onColorChanged,
+        _onChanged = onChanged;
 
   /// Controller which handles updating and controlling current theme.
   ///
@@ -76,8 +80,6 @@ class ThemeController extends ChangeNotifier {
     return ThemeController._(
       initialTheme: initialTheme,
       initialMode: initialMode,
-      selected: initialTheme,
-      mode: initialMode,
       modeIcons: modeIcons ?? defaultModeIcons,
       available: available,
       onAvailableChanged: onAvailableChanged,
@@ -89,19 +91,19 @@ class ThemeController extends ChangeNotifier {
   }
 
   /// Called when available themes changed
-  ThemeChanged? onAvailableChanged;
+  ThemeChanged? _onAvailableChanged;
 
   /// Called when selected theme changed
-  ThemeChanged? onThemeChanged;
+  ThemeChanged? _onThemeChanged;
 
   /// Called when theme mode changed
-  ThemeChanged? onModeChanged;
+  ThemeChanged? _onModeChanged;
 
   /// Called when theme color changed
-  ThemeChanged? onColorChanged;
+  ThemeChanged? _onColorChanged;
 
   /// Called when selected theme or theme mode or theme color changed
-  ThemeChanged? onChanged;
+  ThemeChanged? _onChanged;
 
   /// Initial provided theme name/key
   String initialTheme;
@@ -174,21 +176,21 @@ class ThemeController extends ChangeNotifier {
   void setThemes(ThemeMap themes) {
     this.available = themes;
     notifyListeners();
-    this.onAvailableChanged?.call(this);
+    this._onAvailableChanged?.call(this);
   }
 
   /// Update or insert one or multiple theme(s) to the available themes
   void mergeThemes(ThemeMap themes) {
     this.available.addAll(themes);
     notifyListeners();
-    this.onAvailableChanged?.call(this);
+    this._onAvailableChanged?.call(this);
   }
 
   /// Remove a theme by it's key from the available themes
   void removeTheme(String name) {
     this.available.remove(name);
     notifyListeners();
-    this.onAvailableChanged?.call(this);
+    this._onAvailableChanged?.call(this);
   }
 
   /// Set the current selected theme
@@ -199,8 +201,8 @@ class ThemeController extends ChangeNotifier {
     );
     this.selected = name;
     notifyListeners();
-    this.onThemeChanged?.call(this);
-    this.onChanged?.call(this);
+    this._onThemeChanged?.call(this);
+    this._onChanged?.call(this);
   }
 
   void selectIndex(int index) {
@@ -234,16 +236,16 @@ class ThemeController extends ChangeNotifier {
   void toColor(Color? color) {
     this.color = color;
     notifyListeners();
-    this.onColorChanged?.call(this);
-    this.onChanged?.call(this);
+    this._onColorChanged?.call(this);
+    this._onChanged?.call(this);
   }
 
   /// Set the theme mode
   void toMode(ThemeMode mode) {
     this.mode = mode;
     notifyListeners();
-    this.onModeChanged?.call(this);
-    this.onChanged?.call(this);
+    this._onModeChanged?.call(this);
+    this._onChanged?.call(this);
   }
 
   /// Set theme mode to [ThemeMode.light]
@@ -274,10 +276,10 @@ class ThemeController extends ChangeNotifier {
     this.mode = initialMode;
     this.color = null;
     notifyListeners();
-    this.onThemeChanged?.call(this);
-    this.onModeChanged?.call(this);
-    this.onColorChanged?.call(this);
-    this.onChanged?.call(this);
+    this._onThemeChanged?.call(this);
+    this._onModeChanged?.call(this);
+    this._onColorChanged?.call(this);
+    this._onChanged?.call(this);
   }
 
   /// Reset the selected theme to the initial provided value
