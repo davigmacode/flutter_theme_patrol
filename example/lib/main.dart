@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       },
       light: ThemeData.light(),
       dark: ThemeData.dark(),
-      builder: (context, theme) {
+      builder: (context, theme, _) {
         return MaterialApp(
           title: 'ThemePatrol Example',
           theme: theme.data,
@@ -64,7 +64,7 @@ class MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ThemeConsumer(
-              builder: (context, theme) {
+              builder: (context, theme, _) {
                 return Column(
                   children: [
                     ElevatedButton.icon(
@@ -89,7 +89,7 @@ class MyHomePageState extends State<MyHomePage> {
             ),
             const SizedBox(height: 30),
             ThemeConsumer(
-              builder: (context, theme) {
+              builder: (context, theme, _) {
                 return Wrap(
                   spacing: 5,
                   children: theme.availableEntries
@@ -135,7 +135,7 @@ class MyHomePageState extends State<MyHomePage> {
               style: TextStyle(fontWeight: FontWeight.w400),
             ),
             const SizedBox(height: 10),
-            ThemeConsumer(builder: (context, theme) {
+            ThemeConsumer(builder: (context, theme, _) {
               return Container(
                 width: 200,
                 alignment: Alignment.center,

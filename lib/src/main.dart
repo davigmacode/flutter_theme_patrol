@@ -1,17 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'controller.dart';
 import 'provider.dart';
-import 'consumer.dart';
 import 'data.dart';
 import 'model.dart';
 
-class ThemePatrol extends StatelessWidget {
-  const ThemePatrol._({
-    Key? key,
-    required this.controller,
-    required this.builder,
-  }) : super(key: key);
-
+class ThemePatrol extends StatelessWidget with Diagnosticable {
   /// [themes] is optional, it determine the map of [ThemeConfig] that will be available to select.
   /// if one of [light] and [dark] is provided,
   /// will create new theme called 'default' and merged to [themes].
@@ -30,7 +24,8 @@ class ThemePatrol extends StatelessWidget {
   ///
   /// If the use case is multiple theme with dark mode,
   /// provide [themes], [initialThemes], and [initialMode]
-  factory ThemePatrol({
+  ThemePatrol({
+    Key? key,
     ThemeData? light,
     ThemeData? dark,
     ThemeMap themes = const {},
@@ -42,10 +37,9 @@ class ThemePatrol extends StatelessWidget {
     ThemeChanged? onModeChanged,
     ThemeChanged? onColorChanged,
     ThemeChanged? onChanged,
-    required ThemeBuilder builder,
-  }) =>
-      ThemePatrol._(
-        controller: ThemeController(
+    required this.builder,
+    this.child,
+  })  : controller = ThemeController(
           light: light,
           dark: dark,
           themes: themes,
@@ -58,23 +52,38 @@ class ThemePatrol extends StatelessWidget {
           onColorChanged: onColorChanged,
           onChanged: onChanged,
         ),
-        builder: builder,
-      );
+        super(key: key);
 
   /// Builder that gets called when the theme changes
   final ThemeBuilder builder;
 
+  /// The widget below this widget in the tree
+  final Widget? child;
+
+  /// Manages available and selected theme, also notifies listeners of changes
   final ThemeController controller;
 
+  /// The [ThemeController] from the closest instance of
+  /// this class that encloses the given context.
   static ThemeController of(BuildContext context) {
     return ThemeProvider.of(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return ThemeProvider(
+    return ThemeProvider.builder(
       controller: controller,
-      child: ThemeConsumer(builder: builder),
+      builder: builder,
+      child: child,
     );
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<ThemeBuilder>.has('builder', builder));
+    properties.add(DiagnosticsProperty<Widget?>('child', child));
+    properties
+        .add(DiagnosticsProperty<ThemeController>('controller', controller));
   }
 }
