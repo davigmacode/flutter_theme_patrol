@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'controller.dart';
 import 'types.dart';
-import 'data.dart';
+import 'model.dart';
 
 class ThemeConsumer extends StatelessWidget {
   const ThemeConsumer({
