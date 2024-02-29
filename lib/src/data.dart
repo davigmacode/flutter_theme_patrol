@@ -1,43 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-/// The theme config
-///
-/// Contains light and dark theme data, and the theme mode
-class ThemeConfig {
-  /// Default constructor
-  const ThemeConfig._({
-    required this.data,
-    required this.darkData,
-    this.description,
-  });
-
-  factory ThemeConfig({
+/// The theme config contains light and dark theme data
+class ThemeConfig with Diagnosticable {
+  /// Create a theme config
+  ThemeConfig({
     ThemeData? data,
+    this.description,
+  })  : data = data ?? ThemeData.light(),
+        darkData = ThemeData.dark();
+
+  /// Create a theme config for each theme mode
+  ThemeConfig.withMode({
     ThemeData? light,
     ThemeData? dark,
-    String? description,
-  }) =>
-      ThemeConfig._(
-        data: data ?? light ?? ThemeData.light(),
-        darkData: dark ?? ThemeData.dark(),
-        description: description,
-      );
+    this.description,
+  })  : data = light ?? ThemeData.light(),
+        darkData = dark ?? ThemeData.dark();
 
-  factory ThemeConfig.fromColor(
+  /// Create a theme config from color
+  ThemeConfig.fromColor(
     Color color, {
-    String? description,
-  }) =>
-      ThemeConfig._(
-        data: ThemeData(
+    this.description,
+  })  : data = ThemeData(
           brightness: Brightness.light,
           colorSchemeSeed: color,
         ),
-        darkData: ThemeData(
+        darkData = ThemeData(
           brightness: Brightness.dark,
           colorSchemeSeed: color,
-        ),
-        description: description,
-      );
+        );
 
   @override
   bool operator ==(Object other) =>
@@ -71,9 +63,9 @@ class ThemeConfig {
     ThemeData? dark,
     String? description,
   }) {
-    return ThemeConfig(
-      data: data ?? light ?? this.data,
-      dark: dark ?? this.darkData,
+    return ThemeConfig.withMode(
+      light: data ?? light ?? lightData,
+      dark: dark ?? darkData,
       description: description ?? this.description,
     );
   }
@@ -84,8 +76,8 @@ class ThemeConfig {
     // if null return current object
     if (other == null) return this;
 
-    return ThemeConfig(
-      data: other.data,
+    return copyWith(
+      light: other.lightData,
       dark: other.darkData,
       description: other.description,
     );
@@ -96,22 +88,22 @@ class ThemeConfig {
   ThemeConfig toColor(Color? color) {
     return copyWith(
       data: color != null
-          ? this.data.copyWith(
+          ? data.copyWith(
+              brightness: Brightness.light,
+              colorScheme: ColorScheme.fromSeed(
                 brightness: Brightness.light,
-                colorScheme: ColorScheme.fromSeed(
-                  brightness: Brightness.light,
-                  seedColor: color,
-                ),
-              )
+                seedColor: color,
+              ),
+            )
           : null,
       dark: color != null
-          ? this.darkData.copyWith(
+          ? darkData.copyWith(
+              brightness: Brightness.dark,
+              colorScheme: ColorScheme.fromSeed(
                 brightness: Brightness.dark,
-                colorScheme: ColorScheme.fromSeed(
-                  brightness: Brightness.dark,
-                  seedColor: color,
-                ),
-              )
+                seedColor: color,
+              ),
+            )
           : null,
     );
   }
@@ -122,6 +114,15 @@ class ThemeConfig {
     return brightness == Brightness.dark
         ? this.darkData.colorScheme
         : this.data.colorScheme;
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ThemeData>('data', data));
+    properties.add(DiagnosticsProperty<ThemeData>('lightData', lightData));
+    properties.add(DiagnosticsProperty<ThemeData>('darkData', darkData));
+    properties.add(StringProperty('description', description));
   }
 }
 

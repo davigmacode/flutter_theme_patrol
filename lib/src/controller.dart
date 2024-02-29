@@ -55,7 +55,7 @@ class ThemeController extends ChangeNotifier {
     final bool hasDefaultTheme = light != null || dark != null;
     final ThemeMap defaultTheme = hasDefaultTheme
         ? {
-            'default': ThemeConfig(
+            'default': ThemeConfig.withMode(
               description: 'Default Theme',
               light: light,
               dark: dark,
