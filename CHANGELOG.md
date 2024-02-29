@@ -1,3 +1,10 @@
+## 3.0.0
+
+* Added static optional child to consumer
+* Added `ThemeConfig.withMode` constructor
+* Removed `light` and `dark` options from default `ThemeConfig` constructor
+* Diagnosticable widgets
+
 ## 2.2.1
 
 * removed deprecated properties
