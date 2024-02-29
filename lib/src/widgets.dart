@@ -1,9 +1,69 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'controller.dart';
-import 'provider.dart';
+import 'types.dart';
 import 'data.dart';
-import 'model.dart';
+
+class ThemeConsumer extends StatelessWidget {
+  const ThemeConsumer({
+    Key? key,
+    required this.builder,
+    this.child,
+  }) : super(key: key);
+
+  /// Builder that gets called when the theme changes
+  final ThemeBuilder builder;
+
+  /// The widget below this widget in the tree.
+  final Widget? child;
+
+  @override
+  Widget build(BuildContext context) {
+    return builder(context, ThemeProvider.of(context), child);
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(ObjectFlagProperty<ThemeBuilder>.has('builder', builder));
+    properties.add(DiagnosticsProperty<Widget?>('child', child));
+  }
+}
+
+class ThemeProvider extends InheritedNotifier<ThemeController>
+    with Diagnosticable {
+  const ThemeProvider({
+    Key? key,
+    required ThemeController controller,
+    required Widget child,
+  }) : super(key: key, notifier: controller, child: child);
+
+  ThemeProvider.builder({
+    Key? key,
+    required ThemeController controller,
+    required ThemeBuilder builder,
+    Widget? child,
+  }) : super(
+          key: key,
+          notifier: controller,
+          child: ThemeConsumer(
+            builder: builder,
+            child: child,
+          ),
+        );
+
+  static ThemeController of(BuildContext context) {
+    final result = context.dependOnInheritedWidgetOfExactType<ThemeProvider>();
+    assert(result != null, 'No ThemeProvider or ThemePatrol found in context');
+    return result!.notifier!;
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty<ThemeController>('notifier', notifier));
+  }
+}
 
 class ThemePatrol extends StatelessWidget with Diagnosticable {
   /// [themes] is optional, it determine the map of [ThemeConfig] that will be available to select.
