@@ -45,7 +45,7 @@ ThemePatrol(
 ThemeController theme = ThemePatrol.of(context);
 ThemeController theme = ThemeProvider.of(context);
 ThemeConsumer(
-  builder: (context, theme) {
+  builder: (context, theme, child) {
     return Container();
   },
 );
