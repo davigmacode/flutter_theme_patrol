@@ -5,11 +5,11 @@ homepage: https://davigmacode.github.io/flutter_theme_patrol
 repository: https://github.com/davigmacode/flutter_theme_patrol
 
 screenshots:
-  - description: "Preview"
+  - description: "Main Preview"
     path: media/preview.gif
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: '>=2.14.0 <4.0.0'
   flutter: '>=2.0.0'
 
 dependencies:
