@@ -1,16 +1,22 @@
 name: theme_patrol
 description: Keep an eyes on your app theme changes, comes with a powerful set of tools to manage multiple themes with or without theme mode
-version: 3.0.0
+version: 3.0.1
 homepage: https://davigmacode.github.io/flutter_theme_patrol
 repository: https://github.com/davigmacode/flutter_theme_patrol
 
-screenshots:
-  - description: "Main Preview"
-    path: media/preview.gif
+topics:
+  - ui
+  - theme
+  - provider
+  - widget
+
+funding:
+ - https://buymeacoffee.com/davigmacode
+ - https://ko-fi.com/davigmacode
 
 environment:
-  sdk: '>=2.14.0 <4.0.0'
-  flutter: '>=2.0.0'
+  sdk: '>=3.1.0 <4.0.0'
+  flutter: ">=1.17.0"
 
 dependencies:
   flutter:

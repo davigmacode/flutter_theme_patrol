@@ -1,3 +1,7 @@
+## 3.0.1
+
+* Removed screenshot and example from package archive
+
 ## 3.0.0
 
 * Added static optional child to consumer
