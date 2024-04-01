@@ -1,3 +1,8 @@
+## 3.1.0
+
+* Support theme extensions
+* Support theme extensions builder
+
 ## 3.0.1
 
 * Removed screenshot and example from package archive
