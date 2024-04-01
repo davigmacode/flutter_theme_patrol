@@ -46,6 +46,8 @@ class ThemeController extends ChangeNotifier {
   factory ThemeController({
     ThemeData? light,
     ThemeData? dark,
+    ThemeExtensionIterable? extensions,
+    ThemeExtensionBuilder? extensionsBuilder,
     ThemeMap themes = const {},
     ThemeMode initialMode = ThemeMode.system,
     String? initialTheme,
@@ -63,10 +65,12 @@ class ThemeController extends ChangeNotifier {
               description: 'Default Theme',
               light: light,
               dark: dark,
+              extensions: extensions,
+              extensionsBuilder: extensionsBuilder,
             )
           }
         : {};
-    final ThemeMap available = defaultTheme..addAll(themes);
+    final ThemeMap available = {...defaultTheme, ...themes};
     assert(
       available.isNotEmpty,
       'The available themes should not empty, provide [themes] or [light] or [dark]',
@@ -159,6 +163,12 @@ class ThemeController extends ChangeNotifier {
 
   /// The current dark theme data
   ThemeData get darkData => config.darkData;
+
+  /// Arbitrary additions to the theme.
+  ThemeExtensionIterable? get extensions => config.extensions;
+
+  /// Builder that returns iterable of [ThemeExtension]
+  ThemeExtensionBuilder? get extensionsBuilder => config.extensionsBuilder;
 
   /// Whether the theme mode is [ThemeMode.light] or not
   bool get isLightMode => mode == ThemeMode.light;

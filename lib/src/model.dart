@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'types.dart';
 
 /// The theme config contains light and dark theme data
 class ThemeConfig with Diagnosticable {
   /// Create a theme config
   ThemeConfig({
     ThemeData? data,
+    this.extensions,
+    this.extensionsBuilder,
     this.description,
   })  : data = data ?? ThemeData.light(),
         darkData = ThemeData.dark();
@@ -14,6 +17,8 @@ class ThemeConfig with Diagnosticable {
   ThemeConfig.withMode({
     ThemeData? light,
     ThemeData? dark,
+    this.extensions,
+    this.extensionsBuilder,
     this.description,
   })  : data = light ?? ThemeData.light(),
         darkData = dark ?? ThemeData.dark();
@@ -21,6 +26,8 @@ class ThemeConfig with Diagnosticable {
   /// Create a theme config from color
   ThemeConfig.fromColor(
     Color color, {
+    this.extensions,
+    this.extensionsBuilder,
     this.description,
   })  : data = ThemeData(
           brightness: Brightness.light,
@@ -38,10 +45,18 @@ class ThemeConfig with Diagnosticable {
           runtimeType == other.runtimeType &&
           data == other.data &&
           darkData == other.darkData &&
+          extensions == other.extensions &&
+          extensionsBuilder == other.extensionsBuilder &&
           description == other.description;
 
   @override
-  int get hashCode => Object.hash(data, darkData, description);
+  int get hashCode => Object.hash(
+        data,
+        darkData,
+        extensions,
+        extensionsBuilder,
+        description,
+      );
 
   /// The main/light theme data
   final ThemeData data;
@@ -52,6 +67,12 @@ class ThemeConfig with Diagnosticable {
   /// The dark theme data
   final ThemeData darkData;
 
+  /// Arbitrary additions to the theme.
+  final ThemeExtensionIterable? extensions;
+
+  /// Builder that returns iterable of [ThemeExtension]
+  final ThemeExtensionBuilder? extensionsBuilder;
+
   /// Short description which describes the theme
   final String? description;
 
@@ -61,11 +82,15 @@ class ThemeConfig with Diagnosticable {
     ThemeData? data,
     ThemeData? light,
     ThemeData? dark,
+    ThemeExtensionIterable? extensions,
+    ThemeExtensionBuilder? extensionsBuilder,
     String? description,
   }) {
     return ThemeConfig.withMode(
       light: data ?? light ?? lightData,
       dark: dark ?? darkData,
+      extensions: extensions ?? this.extensions,
+      extensionsBuilder: extensionsBuilder ?? this.extensionsBuilder,
       description: description ?? this.description,
     );
   }
@@ -79,6 +104,8 @@ class ThemeConfig with Diagnosticable {
     return copyWith(
       light: other.lightData,
       dark: other.darkData,
+      extensions: other.extensions,
+      extensionsBuilder: other.extensionsBuilder,
       description: other.description,
     );
   }
@@ -123,6 +150,10 @@ class ThemeConfig with Diagnosticable {
     properties.add(DiagnosticsProperty<ThemeData>('lightData', lightData));
     properties.add(DiagnosticsProperty<ThemeData>('darkData', darkData));
     properties.add(StringProperty('description', description));
+    properties.add(ObjectFlagProperty<ThemeExtensionIterable?>.has(
+        'extensions', extensions));
+    properties.add(ObjectFlagProperty<ThemeExtensionBuilder?>.has(
+        'extensionsBuilder', extensionsBuilder));
   }
 }
 

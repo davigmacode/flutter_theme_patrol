@@ -88,6 +88,8 @@ class ThemePatrol extends StatelessWidget with Diagnosticable {
     Key? key,
     ThemeData? light,
     ThemeData? dark,
+    ThemeExtensionIterable? extensions,
+    ThemeExtensionBuilder? extensionsBuilder,
     ThemeMap themes = const {},
     ThemeMode initialMode = ThemeMode.system,
     String? initialTheme,
@@ -102,6 +104,8 @@ class ThemePatrol extends StatelessWidget with Diagnosticable {
   })  : controller = ThemeController(
           light: light,
           dark: dark,
+          extensions: extensions,
+          extensionsBuilder: extensionsBuilder,
           themes: themes,
           initialMode: initialMode,
           initialTheme: initialTheme,
