@@ -7,35 +7,40 @@ class ThemeConfig with Diagnosticable {
   /// Create a theme config
   ThemeConfig({
     ThemeData? data,
+    bool? useMaterial3,
     this.extensions,
     this.extensionsBuilder,
     this.description,
-  })  : data = data ?? ThemeData.light(),
-        darkData = ThemeData.dark();
+  })  : data = data ?? ThemeData.light(useMaterial3: useMaterial3),
+        darkData = ThemeData.dark(useMaterial3: useMaterial3);
 
   /// Create a theme config for each theme mode
   ThemeConfig.withMode({
     ThemeData? light,
     ThemeData? dark,
+    bool? useMaterial3,
     this.extensions,
     this.extensionsBuilder,
     this.description,
-  })  : data = light ?? ThemeData.light(),
-        darkData = dark ?? ThemeData.dark();
+  })  : data = light ?? ThemeData.light(useMaterial3: useMaterial3),
+        darkData = dark ?? ThemeData.dark(useMaterial3: useMaterial3);
 
   /// Create a theme config from color
   ThemeConfig.fromColor(
     Color color, {
+    bool? useMaterial3,
     this.extensions,
     this.extensionsBuilder,
     this.description,
   })  : data = ThemeData(
           brightness: Brightness.light,
           colorSchemeSeed: color,
+          useMaterial3: useMaterial3,
         ),
         darkData = ThemeData(
           brightness: Brightness.dark,
           colorSchemeSeed: color,
+          useMaterial3: useMaterial3,
         );
 
   @override
