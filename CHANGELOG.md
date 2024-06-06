@@ -1,3 +1,8 @@
+## 3.1.1
+
+* Added option to enable/disable material 3
+* Added loading indicator and wasm build for example web page
+
 ## 3.1.0
 
 * Support theme extensions
