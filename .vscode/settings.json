@@ -1,5 +1,5 @@
 {
-  "dart.flutterSdkPath": ".fvm\\versions\\3.19.3",
+  "dart.flutterSdkPath": ".fvm\\versions\\3.22.0",
   "search.exclude": {
     "**/.fvm": true
   },
@@ -17,6 +17,8 @@
     "cupertino",
     "Diagnosticable",
     "Irfan",
+    "LTRB",
+    "pote",
     "Schyler",
     "Taufik",
     "toggleable",
