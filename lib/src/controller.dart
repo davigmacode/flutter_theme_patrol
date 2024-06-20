@@ -164,9 +164,6 @@ class ThemeController extends ChangeNotifier {
   /// The current dark theme data
   ThemeData get darkData => config.darkData;
 
-  /// Arbitrary additions to the theme.
-  ThemeExtensionIterable? get extensions => config.extensions;
-
   /// Builder that returns iterable of [ThemeExtension]
   ThemeExtensionBuilder? get extensionsBuilder => config.extensionsBuilder;
 

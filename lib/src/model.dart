@@ -8,39 +8,45 @@ class ThemeConfig with Diagnosticable {
   ThemeConfig({
     ThemeData? data,
     bool? useMaterial3,
-    this.extensions,
+    ThemeExtensionIterable? extensions,
     this.extensionsBuilder,
     this.description,
-  })  : data = data ?? ThemeData.light(useMaterial3: useMaterial3),
-        darkData = ThemeData.dark(useMaterial3: useMaterial3);
+  })  : data = (data ?? ThemeData.light(useMaterial3: useMaterial3))
+            .copyWith(extensions: extensions),
+        darkData = ThemeData.dark(useMaterial3: useMaterial3)
+            .copyWith(extensions: extensions);
 
   /// Create a theme config for each theme mode
   ThemeConfig.withMode({
     ThemeData? light,
     ThemeData? dark,
     bool? useMaterial3,
-    this.extensions,
+    ThemeExtensionIterable? extensions,
     this.extensionsBuilder,
     this.description,
-  })  : data = light ?? ThemeData.light(useMaterial3: useMaterial3),
-        darkData = dark ?? ThemeData.dark(useMaterial3: useMaterial3);
+  })  : data = (light ?? ThemeData.light(useMaterial3: useMaterial3))
+            .copyWith(extensions: extensions),
+        darkData = (dark ?? ThemeData.dark(useMaterial3: useMaterial3))
+            .copyWith(extensions: extensions);
 
   /// Create a theme config from color
   ThemeConfig.fromColor(
     Color color, {
     bool? useMaterial3,
-    this.extensions,
+    ThemeExtensionIterable? extensions,
     this.extensionsBuilder,
     this.description,
   })  : data = ThemeData(
           brightness: Brightness.light,
           colorSchemeSeed: color,
           useMaterial3: useMaterial3,
+          extensions: extensions,
         ),
         darkData = ThemeData(
           brightness: Brightness.dark,
           colorSchemeSeed: color,
           useMaterial3: useMaterial3,
+          extensions: extensions,
         );
 
   @override
@@ -50,7 +56,6 @@ class ThemeConfig with Diagnosticable {
           runtimeType == other.runtimeType &&
           data == other.data &&
           darkData == other.darkData &&
-          extensions == other.extensions &&
           extensionsBuilder == other.extensionsBuilder &&
           description == other.description;
 
@@ -58,7 +63,6 @@ class ThemeConfig with Diagnosticable {
   int get hashCode => Object.hash(
         data,
         darkData,
-        extensions,
         extensionsBuilder,
         description,
       );
@@ -71,9 +75,6 @@ class ThemeConfig with Diagnosticable {
 
   /// The dark theme data
   final ThemeData darkData;
-
-  /// Arbitrary additions to the theme.
-  final ThemeExtensionIterable? extensions;
 
   /// Builder that returns iterable of [ThemeExtension]
   final ThemeExtensionBuilder? extensionsBuilder;
@@ -94,7 +95,7 @@ class ThemeConfig with Diagnosticable {
     return ThemeConfig.withMode(
       light: data ?? light ?? lightData,
       dark: dark ?? darkData,
-      extensions: extensions ?? this.extensions,
+      extensions: extensions,
       extensionsBuilder: extensionsBuilder ?? this.extensionsBuilder,
       description: description ?? this.description,
     );
@@ -109,7 +110,6 @@ class ThemeConfig with Diagnosticable {
     return copyWith(
       light: other.lightData,
       dark: other.darkData,
-      extensions: other.extensions,
       extensionsBuilder: other.extensionsBuilder,
       description: other.description,
     );
@@ -155,8 +155,6 @@ class ThemeConfig with Diagnosticable {
     properties.add(DiagnosticsProperty<ThemeData>('lightData', lightData));
     properties.add(DiagnosticsProperty<ThemeData>('darkData', darkData));
     properties.add(StringProperty('description', description));
-    properties.add(ObjectFlagProperty<ThemeExtensionIterable?>.has(
-        'extensions', extensions));
     properties.add(ObjectFlagProperty<ThemeExtensionBuilder?>.has(
         'extensionsBuilder', extensionsBuilder));
   }
