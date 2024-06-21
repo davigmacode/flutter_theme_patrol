@@ -77,7 +77,7 @@ class ThemeConfig with Diagnosticable {
   final ThemeData darkData;
 
   /// Builder that returns iterable of [ThemeExtension]
-  final ThemeExtensionBuilder? extensionsBuilder;
+  final ThemeExtensionBuilderIterable? extensionsBuilder;
 
   /// Short description which describes the theme
   final String? description;
@@ -89,7 +89,7 @@ class ThemeConfig with Diagnosticable {
     ThemeData? light,
     ThemeData? dark,
     ThemeExtensionIterable? extensions,
-    ThemeExtensionBuilder? extensionsBuilder,
+    ThemeExtensionBuilderIterable? extensionsBuilder,
     String? description,
   }) {
     return ThemeConfig.withMode(
@@ -151,12 +151,12 @@ class ThemeConfig with Diagnosticable {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<ThemeData>('data', data));
-    properties.add(DiagnosticsProperty<ThemeData>('lightData', lightData));
-    properties.add(DiagnosticsProperty<ThemeData>('darkData', darkData));
+    properties.add(DiagnosticsProperty('data', data));
+    properties.add(DiagnosticsProperty('lightData', lightData));
+    properties.add(DiagnosticsProperty('darkData', darkData));
     properties.add(StringProperty('description', description));
-    properties.add(ObjectFlagProperty<ThemeExtensionBuilder?>.has(
-        'extensionsBuilder', extensionsBuilder));
+    properties
+        .add(ObjectFlagProperty.has('extensionsBuilder', extensionsBuilder));
   }
 }
 

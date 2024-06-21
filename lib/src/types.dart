@@ -7,10 +7,12 @@ typedef ThemeBuilder = Widget Function(
   Widget? child,
 );
 
-typedef ThemeExtensionIterable = Iterable<ThemeExtension<dynamic>>;
+typedef ThemeExtensionIterable = List<ThemeExtension<dynamic>>;
 
-typedef ThemeExtensionBuilder = ThemeExtensionIterable? Function(
+typedef ThemeExtensionBuilder = ThemeExtension<dynamic> Function(
   BuildContext context,
 );
+
+typedef ThemeExtensionBuilderIterable = List<ThemeExtensionBuilder>;
 
 typedef ThemeChanged = void Function(ThemeController theme);

@@ -47,7 +47,7 @@ class ThemeController extends ChangeNotifier {
     ThemeData? light,
     ThemeData? dark,
     ThemeExtensionIterable? extensions,
-    ThemeExtensionBuilder? extensionsBuilder,
+    ThemeExtensionBuilderIterable? extensionsBuilder,
     ThemeMap themes = const {},
     ThemeMode initialMode = ThemeMode.system,
     String? initialTheme,
@@ -164,9 +164,6 @@ class ThemeController extends ChangeNotifier {
   /// The current dark theme data
   ThemeData get darkData => config.darkData;
 
-  /// Builder that returns iterable of [ThemeExtension]
-  ThemeExtensionBuilder? get extensionsBuilder => config.extensionsBuilder;
-
   /// Whether the theme mode is [ThemeMode.light] or not
   bool get isLightMode => mode == ThemeMode.light;
 
@@ -175,6 +172,48 @@ class ThemeController extends ChangeNotifier {
 
   /// Whether the theme mode is [ThemeMode.dark] or not
   bool get isSystemMode => mode == ThemeMode.system;
+
+  /// Builder that returns iterable of [ThemeExtension]
+  ThemeExtensionBuilderIterable? get extensionsBuilder =>
+      config.extensionsBuilder;
+
+  /// Builds a widget tree by applying a series of [ThemeExtension] builders to the given [child] widget.
+  ///
+  /// The [context] parameter is used to access the current build context.
+  /// The [child] parameter is the widget to wrap with the theme extension builders.
+  ///
+  /// Returns the resulting widget tree.
+  ///
+  /// If [child] is `null`, a [SizedBox.shrink] widget is used as the default child.
+  /// If [extensionsBuilder] is `null` or empty, the [child] is returned as is.
+  /// Otherwise, the [child] is wrapped with a [Theme] widget for each [ThemeExtension] returned by [extensionsBuilder].
+  /// The [Theme] widget applies the [ThemeExtension] to the current theme data using [Theme.of].
+  /// The resulting widget tree is constructed by recursively calling [builders.fold] on the [child] and each [ThemeExtension] builder.
+  Widget bootstrap(BuildContext _, Widget? child) {
+    child ??= const SizedBox.shrink();
+
+    final builders = extensionsBuilder?.reversed;
+    if (builders == null) return child;
+    if (builders.length == 0) return child;
+
+    return builders.fold(
+      child,
+      (t, e) {
+        return Builder(builder: (context) {
+          final parent = Theme.of(context);
+          return Theme(
+            data: parent.copyWith(
+              extensions: [
+                ...parent.extensions.values,
+                e.call(context),
+              ],
+            ),
+            child: t,
+          );
+        });
+      },
+    );
+  }
 
   /// internal usage
   final _random = Random();
