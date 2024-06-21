@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
           darkTheme: theme.darkData,
           themeMode: theme.mode,
           home: const MyHomePage(title: 'ThemePatrol Example'),
+          builder: theme.bootstrap,
         );
       },
     );
@@ -72,8 +73,8 @@ class MyHomePageState extends State<MyHomePage> {
                         Colors.green,
                         Colors.blue,
                       ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
                     ),
                     fontWeight: FontWeight.bold,
                     letterSpacing: -2,

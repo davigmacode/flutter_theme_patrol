@@ -1,3 +1,8 @@
+## 3.2.0
+
+* Directly copy extensions to theme data
+* Each of extensions builder member applied in sequence
+
 ## 3.1.1
 
 * Added option to enable/disable material 3
