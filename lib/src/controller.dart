@@ -192,7 +192,7 @@ class ThemeController extends ChangeNotifier {
   Widget bootstrap(BuildContext _, Widget? child) {
     child ??= const SizedBox.shrink();
 
-    final builders = extensionsBuilder?.reversed;
+    final builders = extensionsBuilder;
     if (builders == null) return child;
     if (builders.length == 0) return child;
 
