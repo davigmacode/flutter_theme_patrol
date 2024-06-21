@@ -1,3 +1,7 @@
+## 3.2.1
+
+* No need to reverse the extensions builder member
+
 ## 3.2.0
 
 * Directly copy extensions to theme data
