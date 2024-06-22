@@ -1,3 +1,7 @@
+## 3.2.2
+
+* Optionally extensions builder sequential bootstrap
+
 ## 3.2.1
 
 * No need to reverse the extensions builder member

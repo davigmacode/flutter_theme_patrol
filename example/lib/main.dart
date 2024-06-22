@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           darkTheme: theme.darkData,
           themeMode: theme.mode,
           home: const MyHomePage(title: 'ThemePatrol Example'),
-          builder: theme.bootstrap,
+          builder: theme.bootstrap(),
         );
       },
     );
