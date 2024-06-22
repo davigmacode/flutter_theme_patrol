@@ -189,30 +189,41 @@ class ThemeController extends ChangeNotifier {
   /// Otherwise, the [child] is wrapped with a [Theme] widget for each [ThemeExtension] returned by [extensionsBuilder].
   /// The [Theme] widget applies the [ThemeExtension] to the current theme data using [Theme.of].
   /// The resulting widget tree is constructed by recursively calling [builders.fold] on the [child] and each [ThemeExtension] builder.
-  Widget bootstrap(BuildContext _, Widget? child) {
-    child ??= const SizedBox.shrink();
+  TransitionBuilder bootstrap({bool sequentially = false}) {
+    return (BuildContext _, Widget? child) {
+      child ??= const SizedBox.shrink();
 
-    final builders = extensionsBuilder;
-    if (builders == null) return child;
-    if (builders.length == 0) return child;
+      final builders = extensionsBuilder;
+      if (builders == null) return child;
+      if (builders.isEmpty) return child;
 
-    return builders.fold(
-      child,
-      (t, e) {
-        return Builder(builder: (context) {
-          final parent = Theme.of(context);
-          return Theme(
-            data: parent.copyWith(
-              extensions: [
-                ...parent.extensions.values,
-                e.call(context),
-              ],
-            ),
-            child: t,
-          );
-        });
-      },
-    );
+      if (sequentially) {
+        return builders.fold(
+          child,
+          (t, e) {
+            return Builder(builder: (context) {
+              final parent = Theme.of(context);
+              return Theme(
+                data: parent.copyWith(
+                  extensions: [
+                    ...parent.extensions.values,
+                    e.call(context),
+                  ],
+                ),
+                child: t,
+              );
+            });
+          },
+        );
+      }
+
+      return Theme(
+        data: Theme.of(_).copyWith(
+          extensions: extensionsBuilder?.map((e) => e(_)),
+        ),
+        child: child,
+      );
+    };
   }
 
   /// internal usage
