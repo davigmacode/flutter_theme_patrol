@@ -1,3 +1,7 @@
+## 3.2.3
+
+* Fixed the referenced identifier is a wildcard.
+
 ## 3.2.2
 
 * Optionally extensions builder sequential bootstrap
