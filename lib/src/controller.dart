@@ -190,7 +190,7 @@ class ThemeController extends ChangeNotifier {
   /// The [Theme] widget applies the [ThemeExtension] to the current theme data using [Theme.of].
   /// The resulting widget tree is constructed by recursively calling [builders.fold] on the [child] and each [ThemeExtension] builder.
   TransitionBuilder bootstrap({bool sequentially = false}) {
-    return (BuildContext _, Widget? child) {
+    return (BuildContext ctx, Widget? child) {
       child ??= const SizedBox.shrink();
 
       final builders = extensionsBuilder;
@@ -218,8 +218,8 @@ class ThemeController extends ChangeNotifier {
       }
 
       return Theme(
-        data: Theme.of(_).copyWith(
-          extensions: extensionsBuilder?.map((e) => e(_)),
+        data: Theme.of(ctx).copyWith(
+          extensions: extensionsBuilder?.map((e) => e(ctx)),
         ),
         child: child,
       );
